@@ -1,0 +1,16 @@
+# artefatos de compilação
+*.o
+scheduler
+
+# saídas do programa
+*.out
+
+# log de evidências (vai só no .tar final, não no git)
+evidencias.log
+
+# empacotamento final
+vcrc.tar
+
+# arquivos temporários do editor/sistema
+.vscode/
+*.swp
