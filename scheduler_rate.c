@@ -38,6 +38,12 @@ int simular_rate(Task tarefas[], int n, int tempo_total, Evento eventos[]) {
             }
         }
 
+        for (int i = 0; i < n; i++) {
+            if (tarefas[i].rajada_restante > 0 && tarefas[i].deadline_absoluto == t) {
+                tarefas[i].rajada_restante = 0;
+            }
+        }
+
         int escolhida = escolher_proxima_rate(tarefas, n, t);
 
         if (escolhida == executando_atual) {
@@ -72,4 +78,44 @@ int simular_rate(Task tarefas[], int n, int tempo_total, Evento eventos[]) {
     }
 
     return num_eventos;
+}
+
+void detectar_encerramentos(Task tarefas[], int n, int tempo_total, Encerramento encerramentos[]) {
+    for (int i = 0; i < n; i++) {
+        encerramentos[i].lost = 0;
+        encerramentos[i].killed = 0;
+    }
+
+    for (int t = 0; t < tempo_total; t++) {
+        for (int i = 0; i < n; i++) {
+            if (tarefas[i].proxima_chegada == t) {
+                tarefas[i].rajada_restante = tarefas[i].burst;
+                tarefas[i].deadline_absoluto = t + tarefas[i].deadline;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (tarefas[i].rajada_restante > 0 && tarefas[i].deadline_absoluto == t) {
+                tarefas[i].rajada_restante = 0;
+                encerramentos[i].lost++;
+            }
+        }
+
+        int escolhida = escolher_proxima_rate(tarefas, n, t);
+        if (escolhida != -1) {
+            tarefas[escolhida].rajada_restante--;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (tarefas[i].proxima_chegada == t) {
+                tarefas[i].proxima_chegada = t + tarefas[i].period;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (tarefas[i].rajada_restante > 0) {
+            encerramentos[i].killed = 1;
+        }
+    }
 }
