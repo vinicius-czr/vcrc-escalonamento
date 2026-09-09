@@ -5,7 +5,7 @@ scheduler
 # saídas do programa
 *.out
 
-# log de evidências (vai só no .tar final, não no git)
+# log de evidências
 evidencias.log
 
 # empacotamento final
@@ -14,3 +14,6 @@ vcrc.tar
 # arquivos temporários do editor/sistema
 .vscode/
 *.swp
+
+# anotações dos testes para o relatório
+diario_testes.md
