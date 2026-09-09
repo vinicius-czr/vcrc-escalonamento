@@ -26,7 +26,8 @@ int escrever_saida(const char *caminho_saida, const char *nome_algoritmo, Task t
 
     fprintf(f, "\nCOMPLETE EXECUTION\n");
     for (int i = 0; i < n; i++) {
-        fprintf(f, "[%s] 0\n", tarefas[i].nome);
+        int completas = encerramentos[i].chegadas - encerramentos[i].lost - encerramentos[i].killed;
+        fprintf(f, "[%s] %d\n", tarefas[i].nome, completas);
     }
 
     fprintf(f, "\nKILLED\n");

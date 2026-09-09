@@ -46,8 +46,9 @@ int simular_rate(Task tarefas[], int n, int tempo_total,
     int duracao_atual = 0;
 
     for (int i = 0; i < n; i++) {
-        encerramentos[i].lost = 0;
-        encerramentos[i].killed = 0;
+        encerramentos[i].chegadas = 0
+        ;encerramentos[i].lost = 0;
+        encerramentos[i].killed = 0;  
     }
 
     for (int t = 0; t < tempo_total; t++) {
@@ -55,6 +56,7 @@ int simular_rate(Task tarefas[], int n, int tempo_total,
             if (tarefas[i].proxima_chegada == t) {
                 tarefas[i].rajada_restante = tarefas[i].burst;
                 tarefas[i].deadline_absoluto = t + tarefas[i].deadline;
+                encerramentos[i].chegadas++;
             }
         }
 

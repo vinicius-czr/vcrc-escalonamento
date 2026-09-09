@@ -13,6 +13,7 @@ typedef struct {
 } Evento;
 
 typedef struct {
+    int chegadas;
     int lost;
     int killed;
 } Encerramento;
