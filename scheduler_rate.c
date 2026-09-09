@@ -1,11 +1,11 @@
 #include "scheduler_rate.h"
 
 int escolher_proxima_rate(Task tarefas[], int n, int instante_atual) {
+    (void)instante_atual;
     int escolhida = -1;
 
     for (int i = 0; i < n; i++) {
-        int pronta = (tarefas[i].proxima_chegada <= instante_atual) &&
-                     (tarefas[i].rajada_restante > 0);
+        int pronta = (tarefas[i].rajada_restante > 0);
 
         if (!pronta) {
             continue;
@@ -46,9 +46,9 @@ int simular_rate(Task tarefas[], int n, int tempo_total,
     int duracao_atual = 0;
 
     for (int i = 0; i < n; i++) {
-        encerramentos[i].chegadas = 0
-        ;encerramentos[i].lost = 0;
-        encerramentos[i].killed = 0;  
+        encerramentos[i].chegadas = 0;
+        encerramentos[i].lost = 0;
+        encerramentos[i].killed = 0;
     }
 
     for (int t = 0; t < tempo_total; t++) {
