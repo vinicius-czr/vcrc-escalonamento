@@ -4,6 +4,7 @@
 #include "io.h"
 #include "scheduler_rate.h"
 #include "saida.h"
+#include "scheduler_edf.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -35,18 +36,22 @@ int main(int argc, char *argv[]) {
     Evento eventos[MAX_EVENTOS];
     Encerramento encerramentos[MAX_TAREFAS];
 
+    int num_eventos;
+    char caminho_saida[64];
+    const char *nome_algoritmo;
+
     if (strcmp(algoritmo, "rate") == 0) {
-        int num_eventos = simular_rate(tarefas, n, tempo_total, eventos, encerramentos);
-
-        char caminho_saida[64];
+        num_eventos = simular_rate(tarefas, n, tempo_total, eventos, encerramentos);
         snprintf(caminho_saida, sizeof(caminho_saida), "rate_vcrc.out");
-
-        if (escrever_saida(caminho_saida, "RATE", tarefas, n, eventos, num_eventos, encerramentos) != 0) {
-            fprintf(stderr, "erro: não foi possível escrever o arquivo de saída\n");
-            return 1;
-        }
+        nome_algoritmo = "RATE";
     } else {
-        fprintf(stderr, "erro: algoritmo edf ainda não implementado\n");
+        num_eventos = simular_edf(tarefas, n, tempo_total, eventos, encerramentos);
+        snprintf(caminho_saida, sizeof(caminho_saida), "edf_vcrc.out");
+        nome_algoritmo = "EDF";
+    }
+
+    if (escrever_saida(caminho_saida, nome_algoritmo, tarefas, n, eventos, num_eventos, encerramentos) != 0) {
+        fprintf(stderr, "erro: não foi possível escrever o arquivo de saída\n");
         return 1;
     }
 
