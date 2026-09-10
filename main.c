@@ -29,16 +29,36 @@ int main(int argc, char *argv[]) {
     }
     fclose(teste_abertura);
 
-    int tempo_total = ler_tempo_total(arquivo_entrada);
-    if (tempo_total < 0) {
-        fprintf(stderr, "erro: arquivo '%s' malformado (tempo total ausente ou invalido)\n", arquivo_entrada);
+        int tempo_total = ler_tempo_total(arquivo_entrada);
+    if (tempo_total == ERRO_ARQUIVO) {
+        fprintf(stderr, "erro: nao foi possivel reabrir o arquivo '%s'\n", arquivo_entrada);
+        return 1;
+    }
+    if (tempo_total == ERRO_CAMPO_FALTANDO) {
+        fprintf(stderr, "erro: arquivo '%s' malformado (tempo total ausente ou nao numerico)\n", arquivo_entrada);
+        return 1;
+    }
+    if (tempo_total == ERRO_VALOR_NAO_POSITIVO) {
+        fprintf(stderr, "erro: tempo total de simulacao deve ser um valor positivo\n");
         return 1;
     }
 
     Task tarefas[MAX_TAREFAS];
     int n = ler_tarefas(arquivo_entrada, tarefas);
-    if (n < 0) {
-        fprintf(stderr, "erro: nao foi possivel ler as tarefas do arquivo '%s'\n", arquivo_entrada);
+    if (n == ERRO_ARQUIVO) {
+        fprintf(stderr, "erro: nao foi possivel reabrir o arquivo '%s'\n", arquivo_entrada);
+        return 1;
+    }
+    if (n == ERRO_CAMPO_FALTANDO) {
+        fprintf(stderr, "erro: arquivo '%s' malformado (campo faltando ou nao numerico em uma tarefa)\n", arquivo_entrada);
+        return 1;
+    }
+    if (n == ERRO_VALOR_NAO_POSITIVO) {
+        fprintf(stderr, "erro: todos os valores de periodo, deadline e burst devem ser positivos\n");
+        return 1;
+    }
+    if (n == ERRO_REGRA_CDP) {
+        fprintf(stderr, "erro: uma tarefa viola a regra C <= D <= P\n");
         return 1;
     }
 
